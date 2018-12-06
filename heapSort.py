@@ -7,34 +7,36 @@
 This module provide ....
 
 Authors: duanyibo(duanyibo@baidu.com)
-Date:    2018/12/6 上午10:23
+Date:    2018/12/6 下午1:54
 """
-import math,random
-import heapq
+def sift(data, low, high):
+    i = low      # 父节点
+    j = 2 * i + 1   # 左子节点
+    tmp = data[i]   # 父节点值
+    while j <= high:    # 子节点在节点中
+        if j < high and data[j] < data[j + 1]:  # 有右子节点且右节点比父节点值大
+            j += 1
+        if tmp < data[j]:
+            data[i] = data[j]   # 将父节点替换成新的子节点的值
+            i = j   # 变成新的父节点
+            j = 2 * i + 1   # 新的子节点
+        else:
+            break
+    data[i] = tmp   # 将替换的父节点值赋给最终的父节点
 
-class heapSort():   #网上找的打印树的一个函数，很好用，谁用谁知道
-    def print_tree(self, array): #打印堆排序使用
-        '''
-        深度 前空格 元素间空格
-        1     7       0
-        2     3       7
-        3     1       3
-        4     0       1
-        '''
-        # first=[0]
-        # first.extend(array)
-        # array=first
-        index = 1
-        depth = int(math.ceil(math.log(len(array), 2))) # 因为补0了，不然应该是math.ceil(math.log2(len(array)+1))
-        sep = '  '
-        for i in range(depth):
-            offset = 2 ** i
-            print(sep * (2 ** (depth - i - 1) - 1)),
-            line = array[index:index + offset]
-            for j, x in enumerate(line):
-                print("{:>{}}".format(x, len(sep))),
-                interval = 0 if i == 0 else 2 ** (depth - i) - 1
-                if j < len(line) - 1:
-                    print(sep * interval),
-            index += offset
-            print ''
+
+def heap_sort(data):
+    n = len(data)
+    # 创建堆
+    mid = n//2
+    for i in range(mid):
+        sift(data, mid - i - 1, n-1)
+    # 挨个出数
+    for i in range(n):
+        data[0], data[n-i-1] = data[n-i-1], data[0]     # 将最后一个值与父节点交互位置
+        sift(data, 0, n-i-2)
+
+
+li = [50, 16, 30, 10, 60, 90, 2, 80, 70]
+heap_sort(li)
+print(li)

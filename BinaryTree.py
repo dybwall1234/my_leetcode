@@ -9,6 +9,7 @@ This module provide ....
 Authors: duanyibo(duanyibo@baidu.com)
 Date:    2018/11/22 下午7:33
 """
+import math
 class node():
     def __init__(self, k=None, l=None, r=None):
         self.val = k
@@ -88,6 +89,32 @@ class BiTree(object):
             self.postOrderTrave(bt.right)
             print(bt.val),
 
+    def print_tree(self, array):  # 打印堆排序使用
+        '''
+        深度 前空格 元素间空格
+        1     7       0
+        2     3       7
+        3     1       3
+        4     0       1
+        '''
+        # first=[0]
+        # first.extend(array)
+        # array=first
+        index = 1
+        depth = int(math.ceil(math.log(len(array), 2)))  # 因为补0了，不然应该是math.ceil(math.log2(len(array)+1))
+        sep = '  '
+        for i in range(depth):
+            offset = 2 ** i
+            print(sep * (2 ** (depth - i - 1) - 1)),
+            line = array[index:index + offset]
+            for j, x in enumerate(line):
+                print("{:>{}}".format(x, len(sep))),
+                interval = 0 if i == 0 else 2 ** (depth - i) - 1
+                if j < len(line) - 1:
+                    print(sep * interval),
+            index += offset
+            print ''
+
     #综合打印
     def printTrave(self, bt):
         print("先序遍历: ")
@@ -104,12 +131,10 @@ class BiTree(object):
 if __name__ == '__main__':
     # data_list = [5, 4, 8, 11, None, 13, 4, 7, 2, None, None, None, None, 1, None]
     data_list = [5,4,8,11,None,13,4,7,2,None,None,None,None,None,5,1]
-    from heapSort import heapSort
-    heap1 = heapSort()
-    heap1.print_tree(data_list)
     # root = node()
     # root = root.listcreattree(root, data_list, 0)
-    # btree = BiTree(data_list)
+    btree = BiTree(data_list)
+    btree.print_tree(data_list)
     # root = btree.createBiTree()
     # btree.printTrave(root)
     # root.findNode(root, 4)
