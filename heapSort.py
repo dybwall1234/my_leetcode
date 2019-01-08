@@ -62,7 +62,7 @@ def head_top0(data, n):
     head_data = data[:n]
     for i in range(mid):
         sift(head_data, mid - i - 1, n - 1)
-    print head_data
+    # print head_data
     for item in data[n:]:
         if item > head_data[0]:
             head_data[0] = item
@@ -104,8 +104,20 @@ def writefile():
 
 if __name__ == '__main__':
     # writefile()
-
+    print str(datetime.now())
+    # li = [random.randint(0, 1000000000) for _ in range(10000000)]
+    # print 'generate', str(datetime.now())
+    # tofile = open('data/random.txt', 'w')
+    # for i in li:
+    #     tofile.write(str(i) + '\n')
+    # tofile.close()
+    # print 'write', str(datetime.now())
+    li = open('data/random.txt').readlines()
+    print 'read', str(datetime.now())
+    li = [int(i.strip()) for i in li]
+    print 'trans', str(datetime.now())
     time_start=time.time()
-    heap_out()
+    head_out = head_top0(li, 10000000)
+    # print head_out
     time_end=time.time()
     print('totally cost',time_end-time_start)
