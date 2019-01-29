@@ -10,8 +10,10 @@ Authors: duanyibo(duanyibo@baidu.com)
 Date:    2019/1/22 下午3:33
 """
 from Queue import PriorityQueue
+import heapq
 
 from LinkedListCycle import ListNode, LinkedList
+import LinkedListCycle
 
 class Solution(object):
     def mergeKLists(self, lists):
@@ -19,19 +21,23 @@ class Solution(object):
         :type lists: List[ListNode]
         :rtype: ListNode
         """
-        head = point = ListNode(0)
-        q = PriorityQueue()
-        for l in lists:
-            if l:
-                q.put((l.val, l))
-        while not q.empty():
-            val, node = q.get()
-            point.next = ListNode(val)
-            point = point.next
-            node = node.next
-            if node:
-                q.put((node.val, node))
-        return head.next
+        # 使用小根堆
+        heap = []
+        p = dummy = ListNode(-1)
+        for i in xrange(0, len(lists)):
+            node = lists[i]
+            if not node:
+                continue
+            heapq.heappush(heap, (node.val, node))
+
+        while heap:
+            value, node = heapq.heappop(heap)
+            p.next = node
+            p = p.next
+            if node.next:
+                node = node.next
+                heapq.heappush(heap, (node.val, node))
+        return dummy.next
 
     def divideNconquer(self, lists):
         """
@@ -63,12 +69,17 @@ class Solution(object):
             point.next = l1
         return head.next
 
-data = [[1,4,5],[1,3,4],[2,6]]
+data = [[2,4,5],[1,3,4],[1,6]]
 listLink = []
 for list in data:
-    linkList = LinkedList()
-    listLink.append(linkList.initList(list))
+    linkList = LinkedListCycle.initList(list)
+    listLink.append(linkList)
+
 
 s = Solution()
-re = s.divideNconquer(listLink)
-re.printList
+re = s.mergeKLists(listLink)
+print re.val
+temp = re.next
+while (temp):
+    print temp.val
+    temp = temp.next

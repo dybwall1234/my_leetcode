@@ -14,9 +14,23 @@ Date:    2018/11/22 下午7:33
 class ListNode:
     # Constructor to initialize
     # the node object
-    def __init__(self, data):
-        self.val = data
+    def __init__(self, val=None):
+        self.val = val
         self.next = None
+
+def initList(data):
+    # 创建头结点
+    tem_node = ListNode()
+    node = ListNode()
+    for i in data:
+        # 记得是判定val是否有值，并且用一个node记住头节点，然后返回的是头节点
+        if not tem_node.val:
+            tem_node.val = i
+            node = tem_node
+        else:
+            tem_node.next = ListNode(i)
+            tem_node = tem_node.next
+    return node
 
 class LinkedList:
     # Function to initialize head
